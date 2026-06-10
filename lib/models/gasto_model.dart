@@ -3,12 +3,14 @@ class Gasto {
   final String descricao;
   final double valor;
   final DateTime data;
+  final String categoria;
 
   Gasto({
     String? id,
     required this.descricao,
     required this.valor,
     required this.data,
+    required this.categoria,
   }) : id = id ?? DateTime.now().millisecondsSinceEpoch.toString();
 
   /// 🔹 Converte para JSON (salvar no banco/local storage)
@@ -18,6 +20,7 @@ class Gasto {
       'descricao': descricao,
       'valor': valor,
       'data': data.toIso8601String(),
+      'categoria': categoria,
     };
   }
 
@@ -30,6 +33,7 @@ class Gasto {
       data: json['data'] != null
           ? DateTime.parse(json['data'])
           : DateTime.now(),
+      categoria: json['categoria'] ?? 'Outros',    
     );
   }
 }

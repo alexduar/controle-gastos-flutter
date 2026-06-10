@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../controllers/gasto_controller.dart';
 import '../models/gasto_model.dart';
 import '../widgets/gasto_card.dart';
+import '../data/categorias.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,6 +24,8 @@ class _HomePageState extends State<HomePage> {
 
   int mesSelecionado = DateTime.now().month;
   int anoSelecionado = DateTime.now().year;
+
+  String categoriaSelecionada = 'Alimentação';
 
   @override
   void initState() {
@@ -53,6 +56,7 @@ class _HomePageState extends State<HomePage> {
         descricao: produtoController.text,
         valor: valor,
         data: DateTime.now(),
+        categoria: categoriaSelecionada, // ✅ AGORA SALVA CATEGORIA
       ),
     );
 
@@ -83,7 +87,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: const Color(0xFF0F0F0F),
 
-      // 🔥 APPBAR LIMPA
       appBar: AppBar(
         title: const Text(
           'Meus Gastos',
@@ -103,17 +106,9 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
-                _buildCard(
-                  "Mês",
-                  formatador.format(totalMes),
-                  Colors.green,
-                ),
+                _buildCard("Mês", formatador.format(totalMes), Colors.green),
                 const SizedBox(width: 10),
-                _buildCard(
-                  "Ano",
-                  formatador.format(totalAno),
-                  Colors.blue,
-                ),
+                _buildCard("Ano", formatador.format(totalAno), Colors.blue),
               ],
             ),
           ),
@@ -123,8 +118,7 @@ class _HomePageState extends State<HomePage> {
           // 🔥 SELETOR DE MÊS
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
-            padding: const EdgeInsets.symmetric(
-                horizontal: 12, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(
               color: const Color(0xFF1C1C1C),
               borderRadius: BorderRadius.circular(12),
@@ -175,7 +169,61 @@ class _HomePageState extends State<HomePage> {
 
           const SizedBox(height: 15),
 
-          // 🔥 INPUTS MODERNOS
+          // 🔥 CATEGORIAS (NOVO)
+          SizedBox(
+            height: 80,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: categorias.length,
+              itemBuilder: (context, index) {
+                final cat = categorias[index];
+
+                final isSelected =
+                    cat.nome == categoriaSelecionada;
+
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      categoriaSelecionada = cat.nome;
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? cat.cor.withOpacity(0.3)
+                          : const Color(0xFF1C1C1C),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: isSelected
+                            ? cat.cor
+                            : Colors.transparent,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(cat.icon, color: cat.cor),
+                        const SizedBox(height: 5),
+                        Text(
+                          cat.nome,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          // 🔥 INPUTS
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -185,8 +233,7 @@ class _HomePageState extends State<HomePage> {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: 'Produto',
-                    hintStyle:
-                        const TextStyle(color: Colors.grey),
+                    hintStyle: const TextStyle(color: Colors.grey),
                     filled: true,
                     fillColor: const Color(0xFF1C1C1C),
                     border: OutlineInputBorder(
@@ -204,8 +251,7 @@ class _HomePageState extends State<HomePage> {
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: 'Valor',
-                    hintStyle:
-                        const TextStyle(color: Colors.grey),
+                    hintStyle: const TextStyle(color: Colors.grey),
                     filled: true,
                     fillColor: const Color(0xFF1C1C1C),
                     border: OutlineInputBorder(
@@ -215,8 +261,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onChanged: (value) {
                     double number = _parseCurrency(value);
-                    String formatted =
-                        formatador.format(number);
+                    String formatted = formatador.format(number);
 
                     valorController.value = TextEditingValue(
                       text: formatted,
@@ -259,16 +304,14 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
-      // 🔥 BOTÃO FLUTUANTE
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: adicionarGasto,
-        child: const Icon(Icons.attach_money),
+        child: const Icon(Icons.add),
       ),
     );
   }
 
-  // 🔥 CARD RESUMO
   Widget _buildCard(String title, String value, Color color) {
     return Expanded(
       child: Container(
@@ -280,13 +323,7 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Column(
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.white70,
-                fontSize: 12,
-              ),
-            ),
+            Text(title, style: const TextStyle(color: Colors.white70)),
             const SizedBox(height: 5),
             Text(
               value,
