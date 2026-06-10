@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:suvina/views/ranking_page.dart';
 
 import '../controllers/gasto_controller.dart';
 import '../models/gasto_model.dart';
@@ -87,15 +88,31 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: const Color(0xFF0F0F0F),
 
-      appBar: AppBar(
-        title: const Text(
-          'Meus Gastos',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF0F0F0F),
-        elevation: 0,
-      ),
+appBar: AppBar(
+  title: const Text(
+    'Meus Gastos',
+    style: TextStyle(fontWeight: FontWeight.bold),
+  ),
+  centerTitle: true,
+  backgroundColor: const Color(0xFF0F0F0F),
+  elevation: 0,
+
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.emoji_events, color: Colors.amber),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (_) {
+            return RankingPage(controller: controller);
+          },
+        );
+      },
+    ),
+  ],
+),
 
       body: Column(
         children: [
