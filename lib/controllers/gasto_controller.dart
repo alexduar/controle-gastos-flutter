@@ -7,21 +7,21 @@ class GastoController {
 
   List<Gasto> get gastos => _gastos;
 
-  // 🔹 CARREGAR dados
   Future<void> carregar() async {
     final prefs = await SharedPreferences.getInstance();
     final data = prefs.getString('gastos');
 
-    if (data != null) {
-      List decoded = jsonDecode(data);
-      _gastos.clear();
-      _gastos.addAll(
-        decoded.map((e) => Gasto.fromJson(e)).toList(),
-      );
-    }
+    _gastos.clear();
+
+    if (data == null) return;
+
+    final List decoded = jsonDecode(data);
+
+    _gastos.addAll(
+      decoded.map((e) => Gasto.fromJson(e)).toList(),
+    );
   }
 
-  // 🔹 SALVAR dados
   Future<void> salvar() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -32,17 +32,34 @@ class GastoController {
     await prefs.setString('gastos', data);
   }
 
-  void adicionar(Gasto gasto) {
+  Future<void> adicionar(Gasto gasto) async {
     _gastos.add(gasto);
-    salvar(); // salva automaticamente
+    await salvar();
   }
 
-  void remover(int index) {
-    _gastos.removeAt(index);
-    salvar(); // salva automaticamente
+  Future<void> removerGasto(Gasto gasto) async {
+    _gastos.remove(gasto);
+    await salvar();
   }
 
-  double get total {
-    return _gastos.fold(0.0, (soma, g) => soma + g.valor);
+  double get total =>
+      _gastos.fold(0.0, (soma, g) => soma + g.valor);
+
+  List<Gasto> filtrarPorMes(int ano, int mes) {
+    return _gastos.where((gasto) {
+      return gasto.data.year == ano &&
+             gasto.data.month == mes;
+    }).toList();
   }
+
+  double totalPorMes(int ano, int mes) {
+    return filtrarPorMes(ano, mes)
+        .fold(0.0, (soma, g) => soma + g.valor);
+  }
+  
+  double totalPorAno(int ano) {
+  return _gastos
+      .where((g) => g.data.year == ano)
+      .fold(0.0, (soma, g) => soma + g.valor);
+}
 }

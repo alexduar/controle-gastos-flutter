@@ -13,7 +13,7 @@ void main() {
     // adiciona item
     await tester.enterText(find.byType(TextField).at(0), 'Arroz');
     await tester.enterText(find.byType(TextField).at(1), '10');
-    await tester.tap(find.byIcon(Icons.add));
+    await tester.tap(find.byIcon(Icons.attach_money));
     await tester.pumpAndSettle();
 
     // garante que apareceu corretamente

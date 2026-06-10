@@ -1,29 +1,35 @@
 class Gasto {
-  final String produto;
+  final String id;
+  final String descricao;
   final double valor;
   final DateTime data;
 
   Gasto({
-    required this.produto,
+    String? id,
+    required this.descricao,
     required this.valor,
     required this.data,
-  });
+  }) : id = id ?? DateTime.now().millisecondsSinceEpoch.toString();
 
+  /// 🔹 Converte para JSON (salvar no banco/local storage)
   Map<String, dynamic> toJson() {
     return {
-      'produto': produto,
+      'id': id,
+      'descricao': descricao,
       'valor': valor,
-      'data': data.toIso8601String(), // ✅ correto
+      'data': data.toIso8601String(),
     };
   }
 
+  /// 🔹 Converte do JSON (ler do banco/local storage)
   factory Gasto.fromJson(Map<String, dynamic> json) {
     return Gasto(
-      produto: json['produto'],
-      valor: json['valor'],
+      id: json['id'],
+      descricao: json['descricao'],
+      valor: (json['valor'] as num).toDouble(),
       data: json['data'] != null
           ? DateTime.parse(json['data'])
-          : DateTime.now(), // evita crash com dados antigos
+          : DateTime.now(),
     );
   }
 }
