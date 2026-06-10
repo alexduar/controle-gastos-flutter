@@ -1,4 +1,12 @@
+
 # 💸 Controle de Gastos (Flutter)
+
+---
+
+# Repositorio
+https://github.com/alexduar/controle-gastos-flutter
+
+---
 
 Aplicativo simples desenvolvido em Flutter para controle de gastos do dia a dia.  
 Permite adicionar produtos com seus respectivos valores, listar os itens e visualizar o total gasto.
