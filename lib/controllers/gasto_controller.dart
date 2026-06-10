@@ -62,4 +62,19 @@ class GastoController {
       .where((g) => g.data.year == ano)
       .fold(0.0, (soma, g) => soma + g.valor);
 }
+Map<String, double> rankingPorCategoria() {
+  final Map<String, double> ranking = {};
+
+  for (var gasto in _gastos) {
+    final categoria = gasto.categoria ?? 'Outros';
+
+    if (ranking.containsKey(categoria)) {
+      ranking[categoria] = ranking[categoria]! + gasto.valor;
+    } else {
+      ranking[categoria] = gasto.valor;
+    }
+  }
+
+  return ranking;
+}
 }
