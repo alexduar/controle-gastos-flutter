@@ -13,6 +13,33 @@ Permite adicionar produtos com seus respectivos valores, listar os itens e visua
 
 ---
 
+lib/
+├── core/
+│   └── theme/
+│       └─ app_theme.dart          # Centraliza a estilização do MaterialApp
+├── data/
+│   ├── datasources/
+│   │   └─ gasto_local_datasource.dart # Contrato e implementação do SharedPreferences
+│   ├── models/
+│   │   └─ gasto_model.dart        # O modelo com as conversões JSON
+│   └── repositories/
+│       └─ gasto_repository.dart   # Ponte entre a fonte de dados e a regra de negócio
+├── domain/
+│   └── entities/
+│       └─ categoria.dart          # Entidade pura de categorias (antigo data/categorias.dart)
+├── controllers/
+│   └─ gasto_controller.dart       # Gerencia o estado e regras de negócio puras
+└── views/
+    ├── home/
+    │   ├── home_page.dart
+    │   └── widgets/
+    │       ├── gasto_card.dart
+    │       └── resumo_card.dart   # Extraído para limpar a HomePage
+    └── ranking/
+        └─ ranking_page.dart
+
+---
+
 ## 🚀 Funcionalidades
 
 - ✅ Adicionar produto e valor
