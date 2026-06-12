@@ -58,7 +58,8 @@ O app possui uma interface simples contendo:
 - Campo para nome do produto
 - Campo para valor
 - Lista de itens adicionados
-- Total gasto exibido na tela
+- Total gasto exibido na tela, mensalmente e anualmente
+- Ranking por categorias de gastos
 
 ---
 
