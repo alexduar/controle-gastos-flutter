@@ -13,7 +13,6 @@ class Gasto {
     required this.categoria,
   }) : id = id ?? DateTime.now().millisecondsSinceEpoch.toString();
 
-  /// 🔹 Converte para JSON (salvar no banco/local storage)
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -24,16 +23,13 @@ class Gasto {
     };
   }
 
-  /// 🔹 Converte do JSON (ler do banco/local storage)
   factory Gasto.fromJson(Map<String, dynamic> json) {
     return Gasto(
-      id: json['id'],
-      descricao: json['descricao'],
+      id: json['id'] as String,
+      descricao: json['descricao'] as String,
       valor: (json['valor'] as num).toDouble(),
-      data: json['data'] != null
-          ? DateTime.parse(json['data'])
-          : DateTime.now(),
-      categoria: json['categoria'] ?? 'Outros',    
+      data: json['data'] != null ? DateTime.parse(json['data'] as String) : DateTime.now(),
+      categoria: json['categoria'] as String? ?? 'Outros',    
     );
   }
 }
