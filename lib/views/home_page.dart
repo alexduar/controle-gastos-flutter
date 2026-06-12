@@ -20,8 +20,7 @@ class _HomePageState extends State<HomePage> {
   final produtoController = TextEditingController();
   final valorController = TextEditingController();
 
-  final formatador =
-      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+  final formatador = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   int mesSelecionado = DateTime.now().month;
   int anoSelecionado = DateTime.now().year;
@@ -45,8 +44,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void adicionarGasto() async {
-    if (produtoController.text.isEmpty ||
-        valorController.text.isEmpty) return;
+    if (produtoController.text.isEmpty || valorController.text.isEmpty) return;
 
     double valor = _parseCurrency(valorController.text);
 
@@ -68,8 +66,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   String nomeMes(int mes) {
-    return DateFormat.MMMM('pt_BR')
-        .format(DateTime(0, mes));
+    return DateFormat.MMMM('pt_BR').format(DateTime(0, mes));
   }
 
   @override
@@ -79,40 +76,38 @@ class _HomePageState extends State<HomePage> {
       mesSelecionado,
     );
 
-    final totalMes =
-        controller.totalPorMes(anoSelecionado, mesSelecionado);
+    final totalMes = controller.totalPorMes(anoSelecionado, mesSelecionado);
 
-    final totalAno =
-        controller.totalPorAno(anoSelecionado);
+    final totalAno = controller.totalPorAno(anoSelecionado);
 
     return Scaffold(
       backgroundColor: const Color(0xFF0F0F0F),
 
-appBar: AppBar(
-  title: const Text(
-    'Meus Gastos',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  ),
-  centerTitle: true,
-  backgroundColor: const Color(0xFF0F0F0F),
-  elevation: 0,
+      appBar: AppBar(
+        title: const Text(
+          'Meus Gastos',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF0F0F0F),
+        elevation: 0,
 
-  actions: [
-    IconButton(
-      icon: const Icon(Icons.emoji_events, color: Colors.amber),
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          builder: (_) {
-            return RankingPage(controller: controller);
-          },
-        );
-      },
-    ),
-  ],
-),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.emoji_events, color: Colors.amber),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) {
+                  return RankingPage(controller: controller);
+                },
+              );
+            },
+          ),
+        ],
+      ),
 
       body: Column(
         children: [
@@ -195,8 +190,7 @@ appBar: AppBar(
               itemBuilder: (context, index) {
                 final cat = categorias[index];
 
-                final isSelected =
-                    cat.nome == categoriaSelecionada;
+                final isSelected = cat.nome == categoriaSelecionada;
 
                 return GestureDetector(
                   onTap: () {
@@ -213,9 +207,7 @@ appBar: AppBar(
                           : const Color(0xFF1C1C1C),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: isSelected
-                            ? cat.cor
-                            : Colors.transparent,
+                        color: isSelected ? cat.cor : Colors.transparent,
                       ),
                     ),
                     child: Column(
@@ -321,10 +313,18 @@ appBar: AppBar(
         ],
       ),
 
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
-        onPressed: adicionarGasto,
-        child: const Icon(Icons.add),
+      floatingActionButton: SizedBox(
+        width: 70,
+        height: 70,
+        child: FloatingActionButton(
+          shape: const CircleBorder(), 
+          backgroundColor: Colors.green,
+          onPressed: adicionarGasto,
+          child: const Icon(
+            Icons.attach_money, size: 40,
+            color: Color.fromARGB(255, 0, 8, 0),
+          ),
+        ),
       ),
     );
   }
@@ -344,10 +344,7 @@ appBar: AppBar(
             const SizedBox(height: 5),
             Text(
               value,
-              style: TextStyle(
-                color: color,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(color: color, fontWeight: FontWeight.bold),
             ),
           ],
         ),
